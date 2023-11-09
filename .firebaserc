@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "tpclinica-7ca7f": {
+      "hosting": {
+        "GonzaloTrillo-TpFinal-Clinica": [
+          "tpclinica-7ca7f"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "tpclinica-7ca7f"
+  }
+}
