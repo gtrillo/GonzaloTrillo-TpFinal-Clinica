@@ -1,0 +1,94 @@
+<body style="background-color: rgb(7, 7, 48);">
+    <app-navbar></app-navbar>
+
+    <form style="overflow-y: auto; margin-top: 5px;">
+        <section class="vh-100 gradient-custom">
+            <div class="container min-vh-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-xl-5">
+                        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                            <div class="card-body p-4 text-center">
+                                <div>
+                                    <h2 class="fw-bold text-uppercase">Registro</h2>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (change)="tipoUsuario = 'paciente'">
+                                        <label class="form-check-label" for="flexRadioDefault1">Paciente</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (change)="tipoUsuario = 'especialista'" checked>
+                                        <label class="form-check-label" for="flexRadioDefault2">Especialista</label>
+                                    </div>
+    
+                                    <!-- User information fields -->
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="form-label" for="typeName">Nombre</label>
+                                            <input type="text" id="typeName" class="form-control form-control-lg" name="name">
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-label" for="typeApellido">Apellido</label>
+                                            <input type="text" id="typeApellido" class="form-control form-control-lg" name="apellido">
+                                        </div>
+                                    </div>
+    
+                                    <div class="row">
+                                        <div class="col">
+                                            <label class="form-label" for="typeEdad">Edad</label>
+                                            <input type="text" id="typeEdad" class="form-control form-control-lg" name="edad">
+                                        </div>
+                                        <div class="col">
+                                            <label class="form-label" for="typeDni">DNI</label>
+                                            <input type="text" id="typeDni" class="form-control form-control-lg" name="dni">
+                                        </div>
+                                    </div>
+    
+                                    <!-- Email field -->
+                                    <label class="form-label" for="typeCorreo">Correo</label>
+                                    <input type="text" id="typeCorreo" class="form-control form-control-lg" name="correo">
+    
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-outline form-white mb-2">
+                                                <label class="form-label" for="typeContraseña">Contraseña</label>
+                                                <input type="password" id="typeContraseña" class="form-control form-control-lg" name="contrasena" />
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-outline form-white mb-2">
+                                                <label class="form-label" for="typeRepitaContraseña">Repita Contraseña</label>
+                                                <input type="password" id="typeRepitaContraseña" class="form-control form-control-lg" name="repetirContraseña" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <!-- Campo específico para Paciente -->
+                                    <div *ngIf="tipoUsuario === 'paciente'" class="form-outline form-white mb-2">
+                                        <label class="form-label" for="typeObraSocial">Obra Social</label>
+                                        <input type="text" id="typeObraSocial" class="form-control form-control-lg" name="obraSocial" />
+                                    </div>
+    
+                                    <!-- Campos específicos para Especialista -->
+                                    <div *ngIf="tipoUsuario === 'especialista'" class="form-outline form-white mb-2">
+                                        <label class="form-label" for="typeEspecialidad">Especialidad</label>
+                                        <select id="typeEspecialidad" class="form-control form-control-lg" name="especialidad">
+                                            <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+                                        </select>
+                                    </div>
+    
+                                    <!-- Campo de foto de perfil -->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="photoPerfil">Foto de Perfil</label>
+                                        <input type="file" class="form-control" id="photoPerfil" name="photoPerfil" accept="image/*">
+                                    </div>
+    
+                                    <button class="btn btn-outline-light btn-lg " type="submit">Registrarse</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+ 
+</body>

@@ -30,9 +30,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/bootstrap/scss/bootstrap.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -91,8 +95,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ],
-            "styles": [
+            ],"styles": [
               "src/styles.scss"
             ],
             "scripts": []
