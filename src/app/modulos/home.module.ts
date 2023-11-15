@@ -12,10 +12,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 @NgModule({
   declarations: [
   
-    
-    LoginComponent,
-     RegistroComponent,
-     NavbarComponent
+ 
+ 
   ],
   imports: [
     CommonModule,

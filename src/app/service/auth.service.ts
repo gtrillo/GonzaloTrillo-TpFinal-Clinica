@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 
+import { collectionData } from '@angular/fire/firestore';
+
+import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { RolUser } from '../interfaces/rol-user';
+import { Firestore, collection, query, where, getDocs, addDoc, DocumentReference } from '@angular/fire/firestore';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from '@angular/fire/auth';
+import {doc, setDoc } from 'firebase/firestore';
+
+import { sendEmailVerification } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +17,7 @@ import { Router } from '@angular/router';
 export class AuthServiceService {
 
 
-  constructor(private auth: Auth, private router: Router) { }
+  constructor(private auth: Auth, private router: Router, private firestore: Firestore) { }
   usuarioLogueado: boolean = false;
 
 
@@ -26,11 +34,25 @@ export class AuthServiceService {
         throw error;
       });
   }
-  register({ email, password }: any) {
+
+  register({ email, password, tipoUsuario }: any) {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        return user;
+          if (tipoUsuario === 'paciente') {
+          this.asignarRol(user, { paciente: true });
+        } else if (tipoUsuario === 'especialista') {
+          this.asignarRol(user, { especialista: true });
+        }
+          return sendEmailVerification(user)
+          .then(() => {
+            console.log("Correo de verificación enviado");
+            return user;
+          })
+          .catch((error) => {
+            console.error("Error al enviar el correo de verificación", error);
+            throw error;
+          });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -39,6 +61,8 @@ export class AuthServiceService {
         throw error;
       });
   }
+  
+
   verificarSesion(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       onAuthStateChanged(this.auth, (user) => {
@@ -77,4 +101,10 @@ export class AuthServiceService {
     });
   }
 
+  private asignarRol(user: any, roles: RolUser) {
+    const userDocRef = doc(this.firestore, 'users', user.uid);
+    setDoc(userDocRef, { roles }, { merge: true });
+  }
+  
+  
 }
