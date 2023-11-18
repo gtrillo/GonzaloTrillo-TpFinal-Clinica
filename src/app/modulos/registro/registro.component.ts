@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthServiceService } from 'src/app/service/auth.service';
-import { FormsModule } from '@angular/forms';  // Import the FormsModule
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro',
@@ -9,9 +10,7 @@ import { FormsModule } from '@angular/forms';  // Import the FormsModule
 })
 export class RegistroComponent {
 
-  constructor(private auth: AuthServiceService){
-
-  }
+  constructor(private auth: AuthServiceService, private route: Router) {}
 
   tipoUsuario: string = 'especialista'; // Por defecto, seleccionado como Especialista
   especialidades: string[] = ['Especialidad1', 'Especialidad2', 'Especialidad3']; // Puedes llenar esto con tus especialidades
@@ -25,30 +24,48 @@ export class RegistroComponent {
   obraSocial: string = '';
   especialidad: string = '';
   fotoPerfil: string = '';
-  // Puedes agregar más propiedades según sea necesario (usuario, contrasena, etc.)
 
   Registrar() {
     if (this.contrasena === this.repetirContrasena) {
-      const credentials = { email: this.usuario, password: this.contrasena };
-      this.user.register(credentials)
+      // Declare credentials with a broader type
+      const credentials: any = {
+        nombre: this.nombre,
+        apellido: this.apellido,
+        edad: this.edad,
+        dni: this.dni,
+        correo: this.correo,
+        contrasena: this.contrasena,
+        fotoPerfil: this.fotoPerfil,
+        tipo: this.tipoUsuario,
+      };
+  
+      if (this.tipoUsuario === 'paciente') {
+        credentials['obraSocial'] = this.obraSocial;
+      } else if (this.tipoUsuario === 'especialista') {
+        credentials['especialidad'] = this.especialidad;
+      }
+        this.auth.register({ credentials })
         .then(response => {
-          console.log('Registro Exitoso:', response);
-          this.user.login(credentials);
-          this.router.navigate(['/home']);
+          Swal.fire({
+            icon: 'success',
+            title: 'Registro Exitoso',
+            text: 'Valide su casilla de correo antes de ingresar al sistema',
+          });
         })
         .catch(error => {
           Swal.fire({
             icon: 'error',
-            title: 'a ocurrido un error',
+            title: 'Ha ocurrido un error',
             text: error,
-          })
+          });
         });
     } else {
       Swal.fire({
         icon: 'error',
         title: 'Las contraseñas deben coincidir',
         text: 'Vuelve a intentarlo!',
-      })
+      });
     }
   }
+  
 }

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { HomeComponent } from './modulos/home/home.component';
 import { NavbarComponent } from './modulos/navbar/navbar.component';
 import { BannerComponent } from './modulos/banner/banner.component';
@@ -13,10 +13,12 @@ import { FooterComponent } from './modulos/footer/footer.component';
 import { LoginComponent } from './modulos/login/login.component';
 import { RegistroComponent } from './modulos/registro/registro.component';
 import { FormsModule } from '@angular/forms';  // Import the FormsModule
+import { AuthServiceService } from './service/auth.service';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
+  AppComponent,
   HomeComponent,
   NavbarComponent,
   BannerComponent,
@@ -32,7 +34,7 @@ import { FormsModule } from '@angular/forms';  // Import the FormsModule
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore())
   ],
-  providers: [],
+  providers: [AuthServiceService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

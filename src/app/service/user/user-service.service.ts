@@ -1,22 +1,37 @@
-
 import { Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
-import { addDoc } from '@angular/fire/firestore';
-import { Firestore, collection, doc, getDoc, setDoc } from '@firebase/firestore';
+import { Firestore, collection, query, where, getDocs, DocumentData, addDoc, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { RolUser } from 'src/app/interfaces/rol-user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService  {
-  constructor(private auth: Auth, private firestore: Firestore) {}
+export class UserService {
 
-  async guardarUsario(users : any){
+  constructor(private firestore: Firestore) {}
+
+  public guardarUsuario (user : any){
     const col = collection (this.firestore, 'users') 
-    addDoc(col,users)
+    addDoc(col,user)
   }
 
-  // Obtener información de un usuario por su UID
+  async obtenerInfoUsuarioConRolesPorCorreo(correoUsuario: string) {
+    try {
+      const usersCollection = collection(this.firestore, 'users');
+      const q = query(usersCollection, where('correo', '==', correoUsuario));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const userInfo = doc.data() as DocumentData;
+        console.log('Información del usuario:', userInfo);
+        console.log('Roles del usuario:', userInfo['roles']);
+      });
+    } catch (error) {
+      console.error('Error al obtener la información del usuario:', error);
+      throw error;
+    }
+  }
+
+
   async getUserInfo(uid: string) {
     const userDocRef = doc(this.firestore, 'users', uid);
     const userDoc = await getDoc(userDocRef);
@@ -28,10 +43,5 @@ export class UserService  {
     const userDocRef = doc(this.firestore, 'users', uid);
     return setDoc(userDocRef, { roles }, { merge: true });
   }
-
-  // Obtener el UID del usuario actualmente autenticado
-  getCurrentUserUid() {
-    const user = this.auth.currentUser;
-    return user ? user.uid : null;
-  }
+  
 }

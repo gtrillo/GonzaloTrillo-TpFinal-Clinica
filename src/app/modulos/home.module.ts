@@ -6,6 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AdminstacionUsuariosComponent } from './adminstacion-usuarios/adminstacion-usuarios.component';
 
 
 
@@ -14,6 +15,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   
  
  
+  
+    AdminstacionUsuariosComponent
   ],
   imports: [
     CommonModule,
