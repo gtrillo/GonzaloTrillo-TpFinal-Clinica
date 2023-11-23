@@ -13,10 +13,6 @@ import { AdminstacionUsuariosComponent } from './adminstacion-usuarios/adminstac
 @NgModule({
   declarations: [
   
- 
- 
-  
-    AdminstacionUsuariosComponent
   ],
   imports: [
     CommonModule,

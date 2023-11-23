@@ -24,7 +24,8 @@ export class RegistroComponent {
   obraSocial: string = '';
   especialidad: string = '';
   fotoPerfil: string = '';
-
+  activo: boolean = true;
+  
   Registrar() {
     if (this.contrasena === this.repetirContrasena) {
       // Declare credentials with a broader type
@@ -37,6 +38,7 @@ export class RegistroComponent {
         contrasena: this.contrasena,
         fotoPerfil: this.fotoPerfil,
         tipo: this.tipoUsuario,
+        activo: this.activo
       };
   
       if (this.tipoUsuario === 'paciente') {

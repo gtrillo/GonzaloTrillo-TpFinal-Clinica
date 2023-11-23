@@ -16,22 +16,29 @@ export class LoginComponent {
 
 
 
-  ingresar() {
+  async ingresar() {
     const credentials = { email: this.usuario, password: this.contrasena };
+    try {
+      await this.user.login(credentials);
+      console.log('Inicio de sesión exitoso');
   
-    this.user.login(credentials)
-      .then(response => {
-        console.log("entre");
-        console.log('Inicio de sesión exitoso:', response);
-        this.router.navigate(['/home']);
-      })
-      .catch(error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Usuario o contraseña incorrecta...',
-          text: 'Vuelva a intentarlo!',
-        });
+      const rolUsuario = await this.user.devolverRolUsuario();
+  
+      if (rolUsuario === 'administrador') {
+        this.router.navigate(['/administracion']);
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Usuario o contraseña incorrecta...',
+        text: 'Vuelva a intentarlo!',
       });
+    }
   }
   
+  autocompletarFormulario() {
+    this.usuario = 'gonzalo.trillo546455@gmail.com';
+    this.contrasena = '123123';
+  }
 }

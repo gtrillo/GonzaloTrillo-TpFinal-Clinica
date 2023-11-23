@@ -1,33 +1,31 @@
 import { RolUser } from "../interfaces/rol-user";
-import { Persona } from "./persona";
+import { Persona, Role } from "./persona";
 
-export class Paciente extends Persona {
-  obraSocial?: string;
-  fotoPerfil1?: string;
-  fotoPerfil2?: string;
+export class Especialista extends Persona {
+  especialidad?: string;
+  fotoPerfil?: string;
 
   constructor(
     id?: string,
     nombre?: string,
     correo?: string,
+    apellido? : string,
     contraseña?: string,
     edad?: number,
-    roles?: RolUser,
-    obraSocial?: string,
-    fotoPerfil1?: string,
-    fotoPerfil2?: string
+    roles?: Role,    
+    especialidad?: string,
+    fotoPerfil?: string,
+    actiavo? : boolean,
   ) {
-    super(id, nombre, correo, contraseña, edad, roles);
-    this.obraSocial = obraSocial;
-    this.fotoPerfil1 = fotoPerfil1;
-    this.fotoPerfil2 = fotoPerfil2;
+    super(id, nombre,apellido, correo, contraseña,edad, roles || Role.Especialista, actiavo); // Inicializar role en Persona
+    this.especialidad = especialidad;
+    this.activo = actiavo;
+    this.fotoPerfil = fotoPerfil;
   }
 
-  mostrarPaciente(): void {
+  mostrarEspecialista(): void {
     super.mostrarPersona();
-    console.log("Obra Social:", this.obraSocial);
-    console.log("Foto de Perfil 1:", this.fotoPerfil1);
-    console.log("Foto de Perfil 2:", this.fotoPerfil2);
+    console.log("Especialidad:", this.especialidad);
+    console.log("Foto de Perfil:", this.fotoPerfil);
   }
 }
-

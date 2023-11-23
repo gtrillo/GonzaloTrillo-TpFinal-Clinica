@@ -14,6 +14,7 @@ import { LoginComponent } from './modulos/login/login.component';
 import { RegistroComponent } from './modulos/registro/registro.component';
 import { FormsModule } from '@angular/forms';  // Import the FormsModule
 import { AuthServiceService } from './service/auth.service';
+import { AdminstacionUsuariosComponent } from './modulos/adminstacion-usuarios/adminstacion-usuarios.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { AuthServiceService } from './service/auth.service';
   BannerComponent,
   LoginComponent,
   FooterComponent,
-  RegistroComponent
+  RegistroComponent,
+  AdminstacionUsuariosComponent,
   ],
   imports: [
     BrowserModule,

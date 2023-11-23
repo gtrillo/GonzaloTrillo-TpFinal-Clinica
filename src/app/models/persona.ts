@@ -7,18 +7,23 @@ export enum Role {
 export class Persona {
   id?: string;
   nombre?: string;
+  apellido?: string;
   correo?: string;
   contraseña?: string;
   edad?: number;
   public role: Role;
-
-  constructor(id?: string, nombre?: string, correo?: string, contraseña?: string, edad?: number, role?: Role) {
+  activo? : boolean;
+  
+  constructor(id?: string, nombre?: string, apellido? :string ,correo?: string, contraseña?: string, edad?: number, role?: Role, activo?: boolean) {
+    
     this.id = id;
     this.nombre = nombre;
+    this.apellido = apellido;
     this.correo = correo;
     this.contraseña = contraseña;
     this.edad = edad;
     this.role = role || Role.Paciente;
+    this.activo = activo;
   }
 
   mostrarPersona(): void {
