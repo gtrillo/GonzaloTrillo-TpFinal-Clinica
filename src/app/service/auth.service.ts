@@ -88,7 +88,6 @@ export class AuthServiceService {
                   throw error;
                 })
                 .finally(() => {
-                  // Independientemente de si se envió la verificación o no, guardar la información del usuario
                   console.log("nombre" + credentials.nombre)
                   this.user.guardarUsuario(credentials);
                 });
@@ -112,6 +111,7 @@ export class AuthServiceService {
                 .finally(() => {
                   // Independientemente de si se envió la verificación o no, guardar la información del usuario
                   console.log("nombre" + credentials.nombre)
+                  credentials.activo = false
                   this.user.guardarUsuario(credentials);
                 });
             } else {
@@ -124,33 +124,34 @@ export class AuthServiceService {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.error(`Error al crear el usuario: ${errorCode} - ${errorMessage}`);
-        throw error; // Propagar el error para que pueda ser manejado externamente
+        throw error;
       });
   }
 
 
 
-
-  verificarSesion(user: string) {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // El usuario está autenticado
-
-        if (user.emailVerified) {
-          // El correo electrónico del usuario ha sido verificado
-          console.log('Usuario autenticado y correo electrónico verificado.');
-          // Puedes redirigir al usuario al área autenticada o realizar otras acciones necesarias.
+  verificarSesion(user: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (authUser) => {
+        if (authUser) {
+          // El usuario está autenticado
+  
+          if (authUser.emailVerified) {
+            // El correo electrónico del usuario ha sido verificado
+            console.log('Usuario autenticado y correo electrónico verificado.');
+            resolve(true); // Resuelve la promesa con true
+          } else {
+            // El correo electrónico del usuario aún no ha sido verificado
+            console.warn('El correo electrónico del usuario aún no ha sido verificado.');
+            resolve(false); // Resuelve la promesa con false
+          }
         } else {
-          // El correo electrónico del usuario aún no ha sido verificado
-          console.warn('El correo electrónico del usuario aún no ha sido verificado.');
-          // Puedes mostrar un mensaje al usuario indicándole que verifique su correo electrónico.
+          // No hay usuario autenticado
+          console.log('No hay usuario autenticado.');
+          resolve(false); // Resuelve la promesa con false
         }
-      } else {
-        // No hay usuario autenticado
-        console.log('No hay usuario autenticado.');
-        // Puedes redirigir al usuario al área de inicio de sesión u realizar otras acciones necesarias.
-      }
+      });
     });
   }
 
@@ -178,6 +179,29 @@ export class AuthServiceService {
         }
       });
     });
+  }
+
+  async usuarioActivo(correoUsuario: string): Promise<boolean | null> {
+    try {
+      const usersCollection = collection(this.firestore, 'users');
+      const q = query(usersCollection, where('correo', '==', correoUsuario));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userInfo = userDoc.data() as { activo: boolean };
+  
+        const estaActivo = userInfo.activo;
+  
+        return estaActivo;
+      } else {
+        console.log('Usuario no encontrado en la base de datos.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener el estado del usuario:', error);
+      throw error;
+    }
   }
 
   async devolverRolUsuario() {

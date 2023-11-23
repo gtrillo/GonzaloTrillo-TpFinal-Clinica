@@ -3,7 +3,9 @@ import { Paciente } from 'src/app/models/especialista';
 import { Especialista } from 'src/app/models/paciente';
 import { Persona } from 'src/app/models/persona';
 import { AuthServiceService } from 'src/app/service/auth.service';
+import { EspecialidadService } from 'src/app/service/especialidad.service';
 import { UserService } from 'src/app/service/user/user-service.service';
+import { ValidacionServiceService } from 'src/app/service/validacion-service.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,7 +18,7 @@ export class AdminstacionUsuariosComponent implements OnInit {
   lista: Persona[] = [];
   nombre: string = '';
   apellido: string = '';
-  edad: number = 0;
+  edad: string = "";
   dni: string = '';
   correo: string = '';
   contrasena: string = '';
@@ -26,16 +28,19 @@ export class AdminstacionUsuariosComponent implements OnInit {
   paciente?: Paciente;
   especialista?: Especialista;
   userList: Persona[] = [];
+  fechaInactivacion? = null;
 
   ngOnInit() {
     this.cargarUsuarios();
+
+
   }
 
-  constructor(private userService: UserService, private authService: AuthServiceService) {}
+  constructor(private userService: UserService, private authService: AuthServiceService, private validador : ValidacionServiceService) {}
 
   eliminarUsuario(correoUsuario?: string) {
     if (correoUsuario) {
-      this.userService.desactivarUsuario(correoUsuario);
+      this.userService.eliminarUsuario(correoUsuario);
       this.listaEspecialistas = this.listaEspecialistas.filter(usuario => usuario.correo !== correoUsuario);
     }
   }
@@ -49,7 +54,8 @@ export class AdminstacionUsuariosComponent implements OnInit {
       correo: this.correo,
       contrasena: this.contrasena,
       fotoPerfil: this.fotoPerfil,
-      activo: this.activo
+      activo: this.activo,
+      fechaInactivacion : this.fechaInactivacion
     };
 
     this.authService.register({ credentials })
@@ -87,7 +93,8 @@ export class AdminstacionUsuariosComponent implements OnInit {
             persona.obraSocial,
             persona.fotoPerfil1,
             persona.fotoPerfil2,
-            persona.activo
+            persona.activo,
+            persona.fechaInactivacion
           );
           this.userList.push(paciente);
         } else {
@@ -101,9 +108,10 @@ export class AdminstacionUsuariosComponent implements OnInit {
             persona.roles,
             persona.especialidad,
             persona.fotoPerfil,
-            persona.activo
+            persona.activo,
+            persona.fechaInactivacion
           );
-          if (especialista.activo) {
+          if (especialista.fechaInactivacion == null) {
             this.listaEspecialistas.push(especialista);
           }
           this.userList.push(especialista);
@@ -111,4 +119,59 @@ export class AdminstacionUsuariosComponent implements OnInit {
       });
     });
   }
+
+  activarUsuario(correo?: string){
+    if (correo) {
+      this.userService.ActivarUsuario(correo);
+    }
+  }
+
+
+  desactivarUsuario(correo?: string){
+    if (correo) {
+      this.userService.desactivarUsuario(correo);
+    }
+  }
+
+  validarCampos(){
+
+    console.log("awdad");
+
+    if (!this.validador.validarTexto(this.nombre)) {
+      console.log('Nombre no válido');
+      return;
+    }
+
+    if (!this.validador.validarTexto(this.apellido)) {
+      console.log('Apellido no válido');
+      return;
+    }
+
+    if (!this.validador.validarEdad(this.edad)) {
+      console.log('Edad no válida');
+      return;
+    }
+
+    if (!this.validador.validarDNI(this.dni)) {
+      console.log('DNI no válido');
+      return;
+    }
+
+    if (!this.validador.validarCorreo(this.correo)) {
+      console.log('Correo no válido');
+      return;
+    }
+
+    if (!this.validador.validarContraseña(this.contrasena)) {
+      console.log('Contraseña no válida');
+      return;
+    }
+
+    this.Registrar();
+    
+    console.log('Todos los campos son válidos');
+  }
+  
+
+
 }

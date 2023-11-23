@@ -15,16 +15,21 @@
         </div>
       </div>
 
-      <!-- Segunda columna: Lista de usuarios especialistas -->
-      <div class="col-md-4">
-        <h1 class="mb-3">Lista de usuarios especialistas</h1>
-        <div *ngFor="let usuario of listaEspecialistas" class="user-card mb-3">
-          <div class="font-weight-bold mb-2">Nombre: {{usuario.nombre + " "}}</div>
-          <div>Apellido: {{usuario.apellido}}</div>
-          <div>Correo: {{usuario.correo}}</div>
-          <button (click)="eliminarUsuario(usuario?.correo)" class="btn btn-danger mt-2">Inhabilitar</button>
-        </div>
-      </div>
+   <!-- Segunda columna: Lista de usuarios especialistas -->
+<div class="col-md-4">
+  <h1 class="mb-3">Lista de usuarios especialistas</h1>
+  <div *ngFor="let usuario of listaEspecialistas" class="user-card mb-3">
+    <div class="font-weight-bold mb-2">Nombre: {{usuario.nombre + " "}}</div>
+    <div>Apellido: {{usuario.apellido}}</div>
+    <div>Correo: {{usuario.correo}}</div>
+
+    <!-- Botón para desactivar o activar usuario -->
+    <button *ngIf="usuario.activo; else activarBtn" (click)="desactivarUsuario(usuario.correo)" class="btn btn-danger mt-2">Desactivar</button>
+    <ng-template #activarBtn>
+      <button (click)="activarUsuario(usuario.correo)" class="btn btn-success mt-2">Activar</button>
+    </ng-template>
+  </div>
+</div>
 
       <!-- Tercera columna: Formulario para registrar Administradores -->
       <div class="col-md-4">
@@ -34,34 +39,34 @@
             <!-- Campos del formulario para Administradores -->
             <div class="form-group">
               <label for="nombre">Nombre</label>
-              <input type="text" id="nombre" class="form-control" name="nombre" [(ngModel)]="nombre">
+              <input type="text" id="nombre" class="form-control" name="nombre" [(ngModel)]="nombre" required>
             </div>
             <div class="form-group">
               <label for="apellido">Apellido</label>
-              <input type="text" id="apellido" class="form-control" name="apellido"  [(ngModel)]="apellido">
+              <input type="text" id="apellido" class="form-control" name="apellido"  [(ngModel)]="apellido" required>
             </div>
             <div class="form-group">
               <label for="edad">Edad</label>
-              <input type="text" id="edad" class="form-control" name="edad"  [(ngModel)]="edad">
+              <input type="text" id="edad" class="form-control" name="edad"  [(ngModel)]="edad" required>
             </div>
             <div class="form-group">
               <label for="dni">DNI</label>
-              <input type="text" id="dni" class="form-control" name="dni"  [(ngModel)]="dni">
+              <input type="text" id="dni" class="form-control" name="dni"  [(ngModel)]="dni" required>
             </div>
             <div class="form-group">
               <label for="correo">Correo</label>
-              <input type="text" id="correo" class="form-control" name="correo"  [(ngModel)]="correo">
+              <input type="text" id="correo" class="form-control" name="correo"  [(ngModel)]="correo" required>
             </div>
             <div class="form-group">
               <label for="contrasena">Contraseña</label>
-              <input type="password" id="contrasena" class="form-control" name="contrasena"  [(ngModel)]="contrasena">
+              <input type="password" id="contrasena" class="form-control" name="contrasena"  [(ngModel)]="contrasena" required>
             </div>
             <div class="form-group">
               <label for="photoPerfil">Foto de Perfil</label>
-              <input type="file" class="form-control" id="photoPerfil" name="photoPerfil" accept="image/*"  [(ngModel)]="fotoPerfil" >
+              <input type="file" class="form-control" id="photoPerfil" name="photoPerfil" accept="image/*"  [(ngModel)]="fotoPerfil" required>
             </div>
             <!-- Botón de registro -->
-            <button class="btn btn-outline-light btn-lg btn-submit" (click)="Registrar()">Registrar Administrador</button>
+            <button class="btn btn-outline-light btn-lg btn-submit" type="submit" (click)="validarCampos()">Registrar Administrador</button>
           </form>
         </div>
       </div>

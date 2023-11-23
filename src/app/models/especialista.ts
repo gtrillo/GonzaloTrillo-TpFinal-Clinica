@@ -18,13 +18,15 @@ export class Paciente extends Persona {
     obraSocial?: string,
     fotoPerfil1?: string,
     fotoPerfil2?: string,
-    activo?: boolean
+    activo?: boolean,
+    fechaInactivacion? : Date,
   ) {
-    super(id, nombre,apellido ,correo, contraseña, edad, roles || Role.Paciente, activo);
+    super(id, nombre,apellido ,correo, contraseña, edad, roles || Role.Paciente, activo, fechaInactivacion);
     this.obraSocial = obraSocial;
     this.fotoPerfil1 = fotoPerfil1;
     this.fotoPerfil2 = fotoPerfil2;
     this.activo = activo;
+    this.fechaInactivacion = fechaInactivacion;
   }
 
   mostrarPaciente(): void {

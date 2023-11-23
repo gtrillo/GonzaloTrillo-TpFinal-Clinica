@@ -16,19 +16,19 @@ export class UserService {
   }
 
   async eliminarUsuario(correo: string) {
-    
     try {
       const usersCollection = collection(this.firestore, 'users');
       const q = query(usersCollection, where('correo', '==', correo));
       const querySnapshot = await getDocs(q);
-
+  
       querySnapshot.forEach(async (userDoc) => {
         const userDocRef = doc(this.firestore, 'users', userDoc.id);
-        await deleteDoc(userDocRef);
+        // Establece la fecha de inactivación sin eliminar el documento
+        await setDoc(userDocRef, { fechaInactivacion: new Date(), activo: false }, { merge: true });
       });
-      console.log('Usuario eliminado correctamente');
+      console.log('Usuario marcado como inactivo correctamente');
     } catch (error) {
-      console.error('Error al eliminar el usuario:', error);
+      console.error('Error al marcar el usuario como inactivo:', error);
       throw error;
     }
   }
@@ -50,6 +50,26 @@ export class UserService {
       throw error;
     }
   }
+
+
+  async  ActivarUsuario(correo: string) {
+    try {
+      const usersCollection = collection(this.firestore, 'users');
+      const q = query(usersCollection, where('correo', '==', correo));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach(async (userDoc) => {
+        const userDocRef = doc(this.firestore, 'users', userDoc.id);
+        await setDoc(userDocRef, { activo: true }, { merge: true });
+      });
+
+      console.log('Usuario activado correctamente');
+    } catch (error) {
+      console.error('Error al activar el usuario:', error);
+      throw error;
+    }
+  }
+
 
   public taerUsuarios() {
     const col = collection(this.firestore, 'users');

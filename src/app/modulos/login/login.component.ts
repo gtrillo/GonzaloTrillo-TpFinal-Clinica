@@ -14,7 +14,7 @@ export class LoginComponent {
 
   constructor(private user: AuthServiceService, private router: Router) { }
 
-
+  
 
   async ingresar() {
     const credentials = { email: this.usuario, password: this.contrasena };
@@ -22,10 +22,27 @@ export class LoginComponent {
       await this.user.login(credentials);
       console.log('Inicio de sesión exitoso');
   
-      const rolUsuario = await this.user.devolverRolUsuario();
+      const estaActivo = await this.user.usuarioActivo(credentials.email);
   
-      if (rolUsuario === 'administrador') {
-        this.router.navigate(['/administracion']);
+      if (estaActivo !== null) {
+        if (estaActivo) {
+          const rolUsuario = await this.user.devolverRolUsuario();
+  
+          if (rolUsuario === 'administrador') {
+            this.router.navigate(['/administracion']);
+          } else {
+            const sesionVerificada = await this.user.verificarSesion(this.usuario);
+  
+            if (sesionVerificada) {
+              this.router.navigate(['']);
+              console.log('Usuario activo y no es administrador.');
+            }
+          }
+        } else {
+          console.log('El usuario no está activo.');
+        }
+      } else {
+        console.log('Usuario no encontrado en la base de datos.');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
@@ -36,6 +53,7 @@ export class LoginComponent {
       });
     }
   }
+  
   
   autocompletarFormulario() {
     this.usuario = 'gonzalo.trillo546455@gmail.com';

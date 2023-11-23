@@ -10,6 +10,13 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "registro", component: RegistroComponent },
   { path: "administracion", component: AdminstacionUsuariosComponent },
+  {
+    path: 'home',
+    loadChildren: () =>
+      import('./modulos/home.module').then(
+        (m) => m.HomeModule
+      ),
+  },
 ];
 
 @NgModule({

@@ -13,8 +13,9 @@ export class Persona {
   edad?: number;
   public role: Role;
   activo? : boolean;
+  fechaInactivacion? :Date;
   
-  constructor(id?: string, nombre?: string, apellido? :string ,correo?: string, contraseña?: string, edad?: number, role?: Role, activo?: boolean) {
+  constructor(id?: string, nombre?: string, apellido? :string ,correo?: string, contraseña?: string, edad?: number, role?: Role, activo?: boolean, fechaInactivacion? : Date) {
     
     this.id = id;
     this.nombre = nombre;
@@ -24,6 +25,7 @@ export class Persona {
     this.edad = edad;
     this.role = role || Role.Paciente;
     this.activo = activo;
+    this.fechaInactivacion = fechaInactivacion;
   }
 
   mostrarPersona(): void {

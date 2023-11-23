@@ -69,12 +69,22 @@
                                     </div>
     
                                     <!-- Campos específicos para Especialista -->
-                                    <div *ngIf="tipoUsuario === 'especialista'" class="form-outline form-white mb-2">
-                                        <label class="form-label" for="typeEspecialidad">Especialidad</label>
-                                        <select id="typeEspecialidad" class="form-control form-control-lg" name="especialidad">
-                                            <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+                                    <div class="form-group">
+                                        <label for="especialidad">Especialidad</label>
+                                        <select id="especialidad" class="form-control" name="especialidad" [(ngModel)]="nuevaEspecialidad">
+                                          <option *ngFor="let especialidad of listaEspecialidades" [value]="especialidad.nombre">
+                                            {{ especialidad.nombre }}
+                                          </option>
                                         </select>
-                                    </div>
+                                      </div>
+                                      
+                                      <div class="form-group">
+                                        <label for="nuevaEspecialidad">Nueva Especialidad</label>
+                                        <div class="input-group">
+                                          <input type="text" id="nuevaEspecialidad" class="form-control" name="nuevaEspecialidad" [(ngModel)]="nuevaEspecialidad">
+                                          <button class="btn btn-outline-light" type="button" (click)="agregarEspecialidad()">Cargar</button>
+                                        </div>
+                                      </div>
     
                                     <!-- Campo de foto de perfil -->
                                     <div class="mb-3">

@@ -4,7 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 const routes: Routes = [
-
+  {
+    path: 'gestion-turnos',
+    loadChildren: () =>
+      import('./gestion-turnos/gestion-turnos.component').then(
+        (m) => m.GestionTurnosComponent
+      ),
+  },
 ];
 
 @NgModule({

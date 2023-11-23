@@ -16,11 +16,13 @@ export class Especialista extends Persona {
     especialidad?: string,
     fotoPerfil?: string,
     actiavo? : boolean,
+    fechaInactivacion? : Date,
   ) {
-    super(id, nombre,apellido, correo, contraseña,edad, roles || Role.Especialista, actiavo); // Inicializar role en Persona
+    super(id, nombre,apellido, correo, contraseña,edad, roles || Role.Especialista, actiavo, fechaInactivacion); // Inicializar role en Persona
     this.especialidad = especialidad;
     this.activo = actiavo;
     this.fotoPerfil = fotoPerfil;
+    this.fechaInactivacion = fechaInactivacion
   }
 
   mostrarEspecialista(): void {
